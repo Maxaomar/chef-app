@@ -1,18 +1,18 @@
-import React from "react";
-import Claude from "./Claude";
-import IngredientList from "./IngredientList";
-import getRecipeFromMistral from "./ai";
+import React from "react"
+import IngredientsList from "./IngredientsList"
+import ClaudeRecipe from "./ClaudeRecipe"
+import {getRecipeFromMistral} from "../../ai"
 
 export default function Main() {
-    const [ingredients, setIngredients] = React.useState([]);
-    const [recipe, setRecipe] = React.useState("");
+    const [ingredients, setIngredients] = React.useState(
+        ["chicken", "all the main spices", "corn", "heavy cream", "pasta"]
+    )
+    const [recipe, setRecipe] = React.useState("")
 
     async function getRecipe() {
-        const recipeMarkdown = await getRecipeFromMistral(ingredients);
-        setRecipe(recipeMarkdown);
+        const recipeMarkdown = await getRecipeFromChefClaude(ingredients)
+        setRecipe(recipeMarkdown)
     }
-
-
 
     function addIngredient(formData) {
         const newIngredient = formData.get("ingredient")
@@ -32,12 +32,13 @@ export default function Main() {
             </form>
 
             {ingredients.length > 0 &&
-            <IngredientList
-                 ingredients={ingredients}
-                 getRecipe={getRecipe}
-                 />}
+                <IngredientsList
+                    ingredients={ingredients}
+                    getRecipe={getRecipe}
+                />
+            }
 
-            {recipe && <Claude recipe={recipe}/> }
+            {recipe && <ClaudeRecipe recipe={recipe} />}
         </main>
     )
 }
